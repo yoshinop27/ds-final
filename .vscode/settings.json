@@ -1,0 +1,9 @@
+{
+  "r.lsp.enabled": false,
+  "r.lintr.enabled": false,
+  "r.rterm.enabled": false,
+  "r.lsp.diagnostics": false,
+  "[r]": {
+    "editor.formatOnSave": false
+  }
+}
