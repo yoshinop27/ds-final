@@ -1,0 +1,30 @@
+================================================================================
+AI INTERACTION LOG
+================================================================================
+
+PROMPT 1: Add Dropdown for Variable Selection
+================================================================================
+
+USER PROMPT:
+"insert a dropdown into the UI allowing users to select at least 1 of these 
+options: danceability, energy, key, loudness, mode, speechiness, acousticness, 
+instrumentalness, liveness, valence, tempo"
+
+AI RESPONSE:
+Added a selectInput dropdown widget to the UI that allows users to select 
+multiple variables. The dropdown:
+- Includes all 11 music feature variables with user-friendly labels
+- Supports multiple selection (multiple = TRUE)
+- Has "danceability" as the default selected value
+- Includes help text explaining how to select multiple options
+- Is placed in a sidebarLayout structure with sidebarPanel and mainPanel
+
+CODE CHANGES:
+- Added sidebarLayout structure to ui
+- Added selectInput widget with all 11 variables in the sidebar
+- Set multiple = TRUE to allow selecting multiple variables
+- Added helpText with instructions
+
+================================================================================
+
+
