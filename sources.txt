@@ -1,1 +1,3 @@
 https://www.theanalysisfactor.com/r-glm-plotting/
+https://stackoverflow.com/questions/50107157/adding-labels-to-cluster
+https://stats.oarc.ucla.edu/r/dae/logit-regression/

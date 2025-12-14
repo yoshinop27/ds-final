@@ -68,6 +68,200 @@ CODE CHANGES:
 
 ================================================================================
 
+PROMPT 4: Conditional HelpText Display
+================================================================================
+
+USER PROMPT:
+"how to make my helptext on line 54 render conditionally"
+
+AI RESPONSE:
+Replaced the R if statement (which doesn't work in UI definition) with 
+conditionalPanel() which uses JavaScript expressions to conditionally show/hide 
+UI elements. The helpText now appears only when at least one genre is selected.
+
+CODE CHANGES:
+- Changed from R if statement to conditionalPanel() wrapper
+- Used JavaScript condition "input.genres.length > 0" to check if genres are 
+  selected
+- HelpText now shows/hides automatically as users select/deselect genres
+
+================================================================================
+
+PROMPT 5: Prevent SelectInput Prepopulation
+================================================================================
+
+USER PROMPT:
+"on page 3 why is my box prepopulating"
+
+AI RESPONSE:
+Shiny's selectInput with multiple = FALSE automatically selects the first option 
+by default. Fixed by adding a placeholder option with an empty string value and 
+setting selected = "" to prevent prepopulation.
+
+CODE CHANGES:
+- Added placeholder option "Select a genre..." = "" as first choice
+- Set selected = "" to make placeholder the default
+- This prevents the dropdown from starting with a prepopulated genre value
+- Server outputs use req(input$genre) to wait for user selection
+
+================================================================================
+
+PROMPT 6: Fix "object 'output' not found" Error
+================================================================================
+
+USER PROMPT:
+"Error: object 'output' not found"
+
+AI RESPONSE:
+The error occurred because output statements for page 4 (pca_summary and scree_plot) 
+were placed outside the server function. In Shiny, all output$ objects must be 
+defined inside the server function. Moved these output statements inside the 
+server function to fix the error.
+
+Additionally fixed a typo where `p$rotation` should have been `pca$rotation`.
+
+CODE CHANGES:
+- Moved output$pca_summary and output$scree_plot inside the server function
+- Fixed typo: changed `p$rotation` to `pca$rotation`
+- Properly indented the code within the server function
+
+================================================================================
+
+PROMPT 7: Replace fviz_cluster with Plotly Plot
+================================================================================
+
+USER PROMPT:
+"instead of using fviz_cluster can you do a plotly plot"
+
+AI RESPONSE:
+Replaced fviz_cluster with a plotly scatter plot for the clustering visualization. 
+The plotly version provides interactive features and better integration with Shiny.
+
+CODE CHANGES:
+- Added library(plotly) to imports
+- Changed renderPrint to renderPlotly for clustering output
+- Created plotly scatter plot using PCA to reduce to 2D for visualization
+- Added cluster coloring and interactive markers
+- Updated UI to use plotlyOutput("clustering")
+
+================================================================================
+
+PROMPT 8: Fix "subscript out of bounds" Error
+================================================================================
+
+USER PROMPT:
+"subscript out of bounds"
+
+AI RESPONSE:
+Fixed the error that occurred when only 1 variable was selected, causing PCA to 
+only produce 1 component. Accessing pca$x[, 2] failed in this case.
+
+CODE CHANGES:
+- Added check requiring at least 2 variables before proceeding
+- Added drop = FALSE to preserve data frame structure
+- Added check to ensure at least 2 principal components before accessing PC2
+- Added early return if conditions not met
+
+================================================================================
+
+PROMPT 9: Add Space Above Plot and Labels
+================================================================================
+
+USER PROMPT:
+"add more space between the top of the page and the k means - clustering graph"
+and "add labels to the plot_ly plot"
+
+AI RESPONSE:
+Added top margin to the plotly layout and added hover labels to show cluster 
+information and PC values when hovering over points.
+
+CODE CHANGES:
+- Added margin = list(t = 80) to layout to increase top spacing
+- Added text parameter with cluster, PC1, and PC2 information
+- Added hoverinfo = "text" to customize hover tooltips
+
+================================================================================
+
+PROMPT 10: Fix "'x' must be numeric" Error
+================================================================================
+
+USER PROMPT:
+"'x' must be numeric: error i got when rendering fviz_cluster in rshiny"
+
+AI RESPONSE:
+The error occurred because track_name (a character column) was included in the 
+data passed to fviz_cluster, which only accepts numeric data. Separated track_name 
+from numeric data and switched back to plotly for better Shiny integration.
+
+CODE CHANGES:
+- Separated track_name from numeric data before scaling and clustering
+- Kept track names separately for use as labels
+- Switched from fviz_cluster to plotly (works better with renderPlotly)
+- Added track names to hover labels in plotly plot
+
+================================================================================
+
+PROMPT 11: Switch Back to fviz_cluster with Track Name Rownames
+================================================================================
+
+USER PROMPT:
+"go back to fviz_cluster, but set the rownames to be the song name. then display 
+the data"
+
+AI RESPONSE:
+Switched back from plotly to fviz_cluster and set rownames of the sampled data 
+to track names. This allows fviz_cluster to automatically label the points with 
+song names in the plot.
+
+CODE CHANGES:
+- Changed renderPlotly back to renderPlot (fviz_cluster returns ggplot object)
+- Set rownames(pca_data_sampled) <- track_names_sampled before clustering
+- Used fviz_cluster with repel = TRUE to avoid label overlap
+- Changed UI from plotlyOutput to plotOutput to match renderPlot
+- Track names now appear as labels on the clustering plot
+
+================================================================================
+
+PROMPT 12: Remove Duplicate Song Names
+================================================================================
+
+USER PROMPT:
+"combined_no_rep <- combined %>% 
+
+(Some of the rows have the same song name, I want to repeated song names, just 
+select a row out of the repeats and keep that row I dont care whihc one, they 
+are the same, they differ on just minor details)"
+
+AI RESPONSE:
+Provided R code using dplyr to remove duplicate rows based on track_name, 
+keeping only one row per unique song name. Suggested using distinct() function 
+or group_by() + slice(1).
+
+CODE CHANGES:
+- Suggested: combined_no_rep <- combined %>% distinct(track_name, .keep_all = TRUE)
+- Alternative: combined_no_rep <- combined %>% group_by(track_name) %>% slice(1) %>% ungroup()
+- Both approaches keep the first occurrence of each unique track_name
+
+================================================================================
+
+PROMPT 13: Write Test for Unique track_name Values
+================================================================================
+
+USER PROMPT:
+"the column that needs to be all unique values is track_name write a test that 
+confirms this."
+
+AI RESPONSE:
+Provided multiple approaches to test that track_name has all unique values, 
+including testthat framework syntax and simpler assertion checks.
+
+CODE CHANGES:
+- Provided testthat code: expect_equal(nrow(combined_no_rep), length(unique(combined_no_rep$track_name)))
+- Alternative simple check comparing total rows to unique track_name count
+- Alternative dplyr approach to identify any duplicate track_name values if they exist
+
+================================================================================
+
 
 
 
