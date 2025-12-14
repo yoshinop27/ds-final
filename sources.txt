@@ -1,3 +1,5 @@
 https://www.theanalysisfactor.com/r-glm-plotting/
 https://stackoverflow.com/questions/50107157/adding-labels-to-cluster
 https://stats.oarc.ucla.edu/r/dae/logit-regression/
+https://stats.stackexchange.com/questions/91724/what-is-quasi-binomial-distribution-in-the-context-of-glm
+https://rdrr.io/cran/ggeffects/man/ggpredict.html
